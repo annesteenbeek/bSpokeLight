@@ -93,17 +93,6 @@ inline void clear () {
 
 // blocks counted from the middle
 // leds from the outside, already negated
-inline void setlight(const uint8_t *led_ptr) {
-	P2 = led_ptr[0]; P1_0 = 1; P1_0 = 0;
-	P2 = led_ptr[1]; P1_1 = 1; P1_1 = 0;
-	P2 = led_ptr[2]; P1_2 = 1; P1_2 = 0;
-	P2 = led_ptr[3]; P1_3 = 1; P1_3 = 0;
-
-	P2 = led_ptr[4]; P1_7 = 1; P1_7 = 0;
-	P2 = led_ptr[5]; P1_6 = 1; P1_6 = 0;
-	P2 = led_ptr[6]; P1_5 = 1; P1_5 = 0;
-	P2 = led_ptr[7]; P1_4 = 1; P1_4 = 0;
-}
 #define SETLIGHT(image,p) \
 	P2 = image[i++]; P1_0 = 1; P1_0 = 0; \
 	P2 = image[i++]; P1_1 = 1; P1_1 = 0; \
@@ -117,32 +106,25 @@ inline void setlight(const uint8_t *led_ptr) {
 
 void draw_image() {
 	while (1) {
-		unsigned char g;
 		unsigned int i;
 		__code const uint8_t *current_image;
 
 		current_image = images[image_num];
-		g = frame;
-		// if (g >= FRAMES) { g = FRAMES-1; }
 		clear();
-		P3_7 = 1; P3_6 = 0; P3_5 = 1;
-		i = g*8*3;
+		P3_7 = 1; P3_6 = 0; P3_5 = 1; // Red
+		i = frame*8*3;
 		SETLIGHT(current_image,p)
 
 		current_image = images[image_num];
-		g = frame;
-		// if (g >= FRAMES) { g = FRAMES-1; }
 		clear();
-		P3_7 = 1; P3_6 = 1; P3_5 = 0;
-		i = g*8*3 + 8;
+		P3_7 = 1; P3_6 = 1; P3_5 = 0; // Green
+		i = frame*8*3 + 8;
 		SETLIGHT(current_image,p)
 
 		current_image = images[image_num];
-		g = frame;
-		// if (g >= FRAMES) { g = FRAMES-1; }
 		clear();
-		P3_7 = 0; P3_6 = 1; P3_5 = 1;
-		i = g*8*3 + 2*8;
+		P3_7 = 0; P3_6 = 1; P3_5 = 1; // Blue
+		i = frame*8*3 + 2*8;
 		SETLIGHT(current_image,p)
 	}
 
